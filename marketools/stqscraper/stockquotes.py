@@ -24,7 +24,11 @@ def read_ohlcv_from_csv(file_path):
                          index_col='Date',
                          parse_dates=['Date'],
                          date_parser=lambda x: datetime.strptime(x, '%Y-%m-%d'))
-    output['Volume'] = output['Volume'].astype(np.float64)
+    # if data don't contain volume (i.e tfi) set it to zero and don't fail
+    if "Volume" in output:
+        output["Volume"] = output["Volume"].astype(np.float64)
+    else:
+        output["Volume"] = 0
     return output
 
 
